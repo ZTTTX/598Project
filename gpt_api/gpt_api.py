@@ -8,8 +8,8 @@ def file_to_string(filename):
     with open(filename, 'r') as file:
         return file.read()
 
-def speech2text(client: OpenAI, data_folder, file_name = "test.mp3"):
-    audio_file= open(data_folder / file_name, "rb")
+def speech2text(client: OpenAI, audio_path):
+    audio_file= open(audio_path, "rb")
     transcript = client.audio.transcriptions.create(
         model="whisper-1", 
         file=audio_file,
@@ -28,12 +28,14 @@ def text2speech(client: OpenAI, data_folder, text: str = "Hello, World!"):
     response.stream_to_file(speech_file_path)
     return response, speech_file_path
 
-def one_step_conversation(message_history: list, emotion: str = "neutral"):
-    # Set up directories
-    current_file = Path(__file__).resolve()
-    current_directory = current_file.parent
-    parant_directory = current_directory.parent
-    data_folder = parant_directory / "data"
+def one_step_conversation(message_history: list, emotion: str = "neutral", audio_path = None):
+    if audio_path is None:
+        # Set up directories
+        current_file = Path(__file__).resolve()
+        current_directory = current_file.parent
+        parant_directory = current_directory.parent
+        data_folder = parant_directory / "data"
+        audio_path = data_folder / "test.mp3"
 
     # Create the client
     with open(current_directory/'key.yaml', 'r') as file:
@@ -49,7 +51,7 @@ def one_step_conversation(message_history: list, emotion: str = "neutral"):
     # Add user message to the message history
     user_prompt = file_to_string(current_directory / "user_prompt.txt")
     # Get the transcript
-    transcript = speech2text(client, data_folder)
+    transcript = speech2text(client, audio_path)
     user_message = {"role": "user", "content": user_prompt.format(EMOTION=emotion, DIALOGUE=transcript)}
     message_history.append(user_message)
     print("User emotion: ",emotion)
