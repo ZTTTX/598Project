@@ -6,6 +6,9 @@ if __name__ == "__main__":
     # set up directori
     video_path = "./data_capture/video.mp4"
     audio_path = "./data_capture/audio.wav"
+    # test
+    video_path = "./data_capture/video.mp4"
+    audio_path = "./data/test.wav"
     capture_time = 5
 
     # Initialize message history
@@ -13,6 +16,11 @@ if __name__ == "__main__":
 
     # While loop for the conversation
     while True:
+        # if user is ready to start conversation, start recording
+        user_input = input("Press any key to start recording. If you want to quit, type 'quit'.")
+        if user_input == "quit":
+            break
+        capture_time = int(input("Enter recording time: "))
         # Capture audio and video
         capture_audio_video(capture_time, video_path, audio_path)
 

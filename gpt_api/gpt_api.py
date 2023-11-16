@@ -29,12 +29,12 @@ def text2speech(client: OpenAI, data_folder, text: str = "Hello, World!"):
     return response, speech_file_path
 
 def one_step_conversation(message_history: list, emotion: str = "neutral", audio_path = None):
+    # Set up directories
+    current_file = Path(__file__).resolve()
+    current_directory = current_file.parent
+    parant_directory = current_directory.parent
+    data_folder = parant_directory / "data"
     if audio_path is None:
-        # Set up directories
-        current_file = Path(__file__).resolve()
-        current_directory = current_file.parent
-        parant_directory = current_directory.parent
-        data_folder = parant_directory / "data"
         audio_path = data_folder / "test.mp3"
 
     # Create the client
