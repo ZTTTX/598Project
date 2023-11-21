@@ -1,6 +1,6 @@
 from data_capture import capture_audio_video
 from emotion_detection import from_video_get_emotion, detect_main_emotion
-from gpt_api.gpt_api import one_step_conversation
+from gpt_api.gpt_api import one_step_conversation, one_step_conversation_sr
 
 if __name__ == "__main__":
     # set up directori
@@ -29,7 +29,9 @@ if __name__ == "__main__":
         main_emotion = detect_main_emotion(emotions)
 
         # Get response from GPT-3
-        message_history = one_step_conversation(message_history, main_emotion, audio_path)
+        # one_step_conversation: Use gpt api for speech recognition and text to speech
+        # one_step_conversation_sr: Use Speech Recognition for speech recognition and text to speech
+        message_history = one_step_conversation_sr(message_history, main_emotion, audio_path)
 
         # Print message history just for debugging
         print(message_history)
